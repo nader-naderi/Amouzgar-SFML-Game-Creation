@@ -77,7 +77,7 @@ namespace MyFirstSFMLGame
             if (target.Tag == "Enemy")
             {
                 Sprite.Color = Color.Blue;
-                //Console.WriteLine("Player entered the enemy");
+                Console.WriteLine("Player entered the enemy");
             }
         }
 
@@ -86,7 +86,7 @@ namespace MyFirstSFMLGame
             if (target.Tag == "Enemy")
             {
                 Sprite.Color = Color.White;
-               // Console.WriteLine("Player exited from the enemy");
+                Console.WriteLine("Player exited from the enemy");
             }
         }
     }

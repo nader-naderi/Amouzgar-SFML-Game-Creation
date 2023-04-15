@@ -68,21 +68,19 @@ namespace MyFirstSFMLGame
         public virtual void OnCollisionEnter(GameObejct target)
         {
             if (!IsCollided)
-                return;
-
-            Console.WriteLine("AA");
-
-            IsCollided = false;
+            {
+                Console.WriteLine($"Collision Enter: {this.Tag} collided with {target.Tag}");
+                IsCollided = false;
+            }
         }
 
         public virtual void OnCollisionExit(GameObejct target)
         {
             if (IsCollided)
-                return;
-
-            Console.WriteLine("BB");
-
-            IsCollided = true;
+            {
+                Console.WriteLine($"Collision Exit: {this.Tag} exited collision with {target.Tag}");
+                IsCollided = false;
+            }
         }
     }
 }

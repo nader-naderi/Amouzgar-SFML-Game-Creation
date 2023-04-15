@@ -55,16 +55,7 @@ namespace MyFirstSFMLGame
                 Update();
 
                 // Collision Detection
-                for (int i = 0; i < gameObjects.Count; i++)
-                {
-                    for (int j = 0; j < gameObjects.Count; j++)
-                    {
-                        if (gameObjects[i].CheckCollision(gameObjects[j]))
-                            gameObjects[i].OnCollisionEnter(gameObjects[j]);
-                        else
-                            gameObjects[i].OnCollisionExit(gameObjects[j]);
-                    }
-                }
+                CollisionDetection();
 
                 window.Clear();
 
@@ -72,6 +63,28 @@ namespace MyFirstSFMLGame
                 Draw();
 
                 window.Display();
+                Console.Clear();
+            }
+        }
+
+        private void CollisionDetection()
+        {
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                for (int j = 0; j < gameObjects.Count; j++)
+                {
+                    if (i != j && gameObjects[i].CheckCollision(gameObjects[j]))
+                    {
+                        gameObjects[i].OnCollisionEnter(gameObjects[j]);    
+                        gameObjects[j].OnCollisionEnter(gameObjects[i]);
+                    }
+                    else
+                    {
+                        gameObjects[i].OnCollisionExit(gameObjects[j]);
+                        gameObjects[j].OnCollisionExit(gameObjects[i]);
+                    }
+
+                }
             }
         }
 
@@ -101,7 +114,6 @@ namespace MyFirstSFMLGame
         {
             gameObjects.Remove(target);
         }
-
     }
 
     public static class TimeManager
