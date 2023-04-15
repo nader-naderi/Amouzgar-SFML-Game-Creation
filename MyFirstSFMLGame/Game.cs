@@ -12,10 +12,6 @@ namespace MyFirstSFMLGame
         // Manage
 
         RenderWindow window;
-        int fps = 0;
-        Clock fpsClock;
-        Time fpsTime;
-        Text fpsTxt;
         Font font;
 
         public static Game Instance;
@@ -31,9 +27,8 @@ namespace MyFirstSFMLGame
 
             window.SetVerticalSyncEnabled(true);
             ResourceManager.LoadAssets();
-            
-            fpsClock = new Clock();
-            fpsTime = fpsClock.Restart();
+
+            TimeManager.Awake();
 
             font = new Font(Directory.GetCurrentDirectory() +
                 "/Assets/Textures/SpaceShooterRedux/Bonus/kenvector_future.ttf");
@@ -88,14 +83,7 @@ namespace MyFirstSFMLGame
 
         private void Update()
         {
-            fps++;
-
-            if (fpsClock.ElapsedTime.AsSeconds() > 1)
-            {
-                fpsTime = fpsClock.Restart();
-                window.SetTitle("SFML Window FPS : " + fps);
-                fps = 0;
-            }
+            TimeManager.Update(window);
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
                 window.Close();
@@ -114,5 +102,31 @@ namespace MyFirstSFMLGame
             gameObjects.Remove(target);
         }
 
+    }
+
+    public static class TimeManager
+    {
+        static int fps = 0;
+        static Clock fpsClock;
+        static Time fpsTime;
+        static Text fpsTxt;
+
+        public static void Awake()
+        {
+            fpsClock = new Clock();
+            fpsTime = fpsClock.Restart();
+        }
+
+        public static void Update(RenderWindow window)
+        {
+            fps++;
+
+            if (fpsClock.ElapsedTime.AsSeconds() > 1)
+            {
+                fpsTime = fpsClock.Restart();
+                window.SetTitle("SFML Window FPS : " + fps);
+                fps = 0;
+            }
+        }
     }
 }
