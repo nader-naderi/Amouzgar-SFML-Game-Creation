@@ -8,40 +8,31 @@ namespace MyFirstSFMLGame
 {
     public class Game
     {
-        // Modular
-        // Manage
-
+        // Component 
         RenderWindow window;
         Font font;
 
         public static Game Instance;
-
-        public List<GameObejct> gameObjects = new List<GameObejct>();
-
+        
+        /// <summary>
+        /// Engine Constructor
+        /// </summary>
         public Game()
         {
             // C++ Bind to C# 
             
             window = new RenderWindow(new VideoMode(800, 600), "Our Great Game");
             ResourceManager.Window = window;
-
             window.SetVerticalSyncEnabled(true);
             ResourceManager.LoadAssets();
-
             TimeManager.Awake();
-
             font = new Font(Directory.GetCurrentDirectory() +
                 "/Assets/Textures/SpaceShooterRedux/Bonus/kenvector_future.ttf");
-            gameObjects.Add(new GameObejct(ResourceManager.BackGroundTexture));
             
-            gameObjects.Add(new Player(ResourceManager.PlayerTexture));
-            gameObjects.Add(new Enemy(ResourceManager.EnemyTexture));
+            Scene scene = new Scene("New Scene");
+            SceneManager.AddScene(scene);
 
-            foreach (GameObejct gameObejct in gameObjects)
-            {
-                gameObejct.Awake();
-                gameObejct.Start();
-            }
+
         }
         public void Run()
         {
@@ -54,8 +45,7 @@ namespace MyFirstSFMLGame
                 // Update.
                 Update();
 
-                // Collision Detection
-                CollisionDetection();
+                PhysicsManager.Update();
 
                 window.Clear();
 
@@ -67,31 +57,9 @@ namespace MyFirstSFMLGame
             }
         }
 
-        private void CollisionDetection()
-        {
-            for (int i = 0; i < gameObjects.Count; i++)
-            {
-                for (int j = 0; j < gameObjects.Count; j++)
-                {
-                    if (i != j && gameObjects[i].CheckCollision(gameObjects[j]))
-                    {
-                        gameObjects[i].OnCollisionEnter(gameObjects[j]);    
-                        gameObjects[j].OnCollisionEnter(gameObjects[i]);
-                    }
-                    else
-                    {
-                        gameObjects[i].OnCollisionExit(gameObjects[j]);
-                        gameObjects[j].OnCollisionExit(gameObjects[i]);
-                    }
-
-                }
-            }
-        }
-
         private void Draw()
         {
-            foreach (GameObejct gameObejct in gameObjects)
-                window.Draw(gameObejct);
+            window.Draw(SceneManager.CurrentScene);
         }
 
         private void Update()
@@ -101,44 +69,99 @@ namespace MyFirstSFMLGame
             if (Keyboard.IsKeyPressed(Keyboard.Key.Escape))
                 window.Close();
 
-            foreach (GameObejct gameObject in gameObjects)
-                gameObject.Update();
-        }
-
-        public void AddGameObejct(GameObejct target)
-        {
-            gameObjects.Add(target);
-        }
-
-        public void RemoveGameObejct(GameObejct target)
-        {
-            gameObjects.Remove(target);
+            SceneManager.CurrentScene.Update();
         }
     }
 
-    public static class TimeManager
+    public static class PhysicsManager
     {
-        static int fps = 0;
-        static Clock fpsClock;
-        static Time fpsTime;
-        static Text fpsTxt;
+        private static List<GameObejct> gameObejcts = new List<GameObejct>();   
 
-        public static void Awake()
+        public static void AddGameObject()
         {
-            fpsClock = new Clock();
-            fpsTime = fpsClock.Restart();
+
         }
 
-        public static void Update(RenderWindow window)
+        public static void RemoveGameObject()
         {
-            fps++;
 
-            if (fpsClock.ElapsedTime.AsSeconds() > 1)
+        }
+
+        public static void Update()
+        {
+            CollisionDetection();
+        }
+
+        private static void CollisionDetection()
+        {
+            for (int i = 0; i < gameObejcts.Count; i++)
             {
-                fpsTime = fpsClock.Restart();
-                window.SetTitle("SFML Window FPS : " + fps);
-                fps = 0;
+                for (int j = 0; j < gameObejcts.Count; j++)
+                {
+                    GameObejct objectA = gameObejcts[i];
+                    GameObejct objectB = gameObejcts[j];
+
+                    if (objectA.CheckCollision(objectB))
+                    {
+                        objectA.OnCollisionEnter(objectB);
+                        objectB.OnCollisionEnter(objectA);
+                    }
+                    else
+                    {
+                        objectA.OnCollisionExit(objectB);
+                        objectB.OnCollisionExit(objectA);
+                    }
+                }
             }
+        }
+
+        public static void ApplyPhysics(List<Rigidbody> rigidbodies, float deltaTime)
+        {
+            foreach (Rigidbody body in rigidbodies)
+            {
+                // Apply Gravity
+                body.ApplyForce(new Vector2f(0, body.Gravity) * deltaTime);
+
+                // Apply Velocity
+                body.gameObejct.Position += body.Velocity * deltaTime;
+
+                // Apply Firiction
+                float firiction = body.Friction * deltaTime;
+
+                if (body.Velocity.X > 0)
+                    body.Velocity -= new Vector2f(Math.Min(body.Velocity.X, firiction), 0);
+                else if (body.Velocity.X < 0)
+                    body.Velocity += new Vector2f(Math.Min(-body.Velocity.X, firiction), 0);
+            }
+        }
+    }
+
+    public interface IPhysical
+    {
+        /// <summary>
+        /// جاذبه
+        /// </summary>
+        float Gravity { get; set; } 
+        /// <summary>
+        /// اصطکاک
+        /// </summary>
+        float Friction { get; set; }
+        /// <summary>
+        /// تکانه
+        /// </summary>
+        Vector2f Velocity { get; set; } 
+    }
+
+    public class Rigidbody : IPhysical
+    {
+        public GameObejct gameObejct;
+        public float Gravity { get; set; }
+        public float Friction { get; set; }
+        public Vector2f Velocity { get; set; }
+
+        public void ApplyForce(Vector2f force)
+        {
+            Velocity += force;
         }
     }
 }

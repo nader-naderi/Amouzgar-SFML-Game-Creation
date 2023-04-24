@@ -13,6 +13,7 @@ namespace MyFirstSFMLGame
         public Player(Texture texture) : base(texture)
         {
             Tag = "Player";
+
         }
 
         public override void Awake()
@@ -67,7 +68,7 @@ namespace MyFirstSFMLGame
             newBullet.Position = Position;
             newBullet.Rotation = Rotation;
 
-            Game.Instance.AddGameObejct(newBullet);
+            SceneManager.CurrentScene.AddGameObejct(newBullet);
             Console.WriteLine("Bullet = " + newBullet.Tag);
         }
 

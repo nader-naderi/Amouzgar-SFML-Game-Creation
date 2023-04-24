@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace MyFirstSFMLGame
 {
-    public class GameObejct : Drawable, IDisposable
+    public class GameObejct : Drawable, IDisposable, IInitializable, IUpdatable, ILoadable
     {
         protected Sprite sprite;
         protected float rotation;
@@ -59,7 +59,7 @@ namespace MyFirstSFMLGame
 
         public virtual void OnDestroy()
         {
-            Game.Instance.RemoveGameObejct(this);
+            SceneManager.CurrentScene.RemoveGameObejct(this);
             Dispose();
         }
 
@@ -67,20 +67,22 @@ namespace MyFirstSFMLGame
 
         public virtual void OnCollisionEnter(GameObejct target)
         {
-            if (!IsCollided)
-            {
-                Console.WriteLine($"Collision Enter: {this.Tag} collided with {target.Tag}");
-                IsCollided = false;
-            }
+
         }
 
         public virtual void OnCollisionExit(GameObejct target)
         {
-            if (IsCollided)
-            {
-                Console.WriteLine($"Collision Exit: {this.Tag} exited collision with {target.Tag}");
-                IsCollided = false;
-            }
+
+        }
+
+        public void Load()
+        {
+            sprite.Texture.Smooth = true;
+        }
+
+        public void Unload()
+        {
+            sprite.Texture.Smooth = false;
         }
     }
 }
