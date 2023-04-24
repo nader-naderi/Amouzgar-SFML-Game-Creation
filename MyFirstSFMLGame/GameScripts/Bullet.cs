@@ -6,10 +6,15 @@ namespace MyFirstSFMLGame
     public class Bullet : GameObejct
     {
         float bulletSpeed = 10;
+        Rigidbody rb = new Rigidbody();
 
         public Bullet(Texture texture) : base(texture)
         {
             Tag = "Bullet";
+            
+            Console.WriteLine("BNB");
+
+            AddComponent(rb, new AudioPlayer(), new SpriteRenderer());
         }
 
         public override void Awake()

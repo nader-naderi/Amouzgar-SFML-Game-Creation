@@ -1,5 +1,4 @@
 ﻿using SFML.Graphics;
-using SFML.System;
 using SFML.Window;
 
 using System;
@@ -19,16 +18,17 @@ namespace MyFirstSFMLGame
         /// </summary>
         public Game()
         {
-            // C++ Bind to C# 
-            
             window = new RenderWindow(new VideoMode(800, 600), "Our Great Game");
             ResourceManager.Window = window;
             window.SetVerticalSyncEnabled(true);
+
             ResourceManager.LoadAssets();
+
             TimeManager.Awake();
+
             font = new Font(Directory.GetCurrentDirectory() +
                 "/Assets/Textures/SpaceShooterRedux/Bonus/kenvector_future.ttf");
-            
+
             Scene scene = new Scene("New Scene");
             SceneManager.AddScene(scene);
 
@@ -41,7 +41,7 @@ namespace MyFirstSFMLGame
             {
                 // Handle Events
                 window.DispatchEvents();
-
+                
                 // Update.
                 Update();
 
@@ -53,7 +53,7 @@ namespace MyFirstSFMLGame
                 Draw();
 
                 window.Display();
-                Console.Clear();
+                //Console.Clear();
             }
         }
 
@@ -73,95 +73,35 @@ namespace MyFirstSFMLGame
         }
     }
 
-    public static class PhysicsManager
+    // Componenets: DataType
+        // Rigidbody
+        // AudioPlayer
+        // SpriteRenderer
+        // Collider
+
+    // Generics
+        
+
+    public abstract class Component
     {
-        private static List<GameObejct> gameObejcts = new List<GameObejct>();   
+        public GameObejct gameObejct { get; set; }
+        public abstract void Update(float deltaTime);
+    }
 
-        public static void AddGameObject()
+
+
+    public class SpriteRenderer : Component
+    {
+        public override void Update(float deltaTime)
         {
-
-        }
-
-        public static void RemoveGameObject()
-        {
-
-        }
-
-        public static void Update()
-        {
-            CollisionDetection();
-        }
-
-        private static void CollisionDetection()
-        {
-            for (int i = 0; i < gameObejcts.Count; i++)
-            {
-                for (int j = 0; j < gameObejcts.Count; j++)
-                {
-                    GameObejct objectA = gameObejcts[i];
-                    GameObejct objectB = gameObejcts[j];
-
-                    if (objectA.CheckCollision(objectB))
-                    {
-                        objectA.OnCollisionEnter(objectB);
-                        objectB.OnCollisionEnter(objectA);
-                    }
-                    else
-                    {
-                        objectA.OnCollisionExit(objectB);
-                        objectB.OnCollisionExit(objectA);
-                    }
-                }
-            }
-        }
-
-        public static void ApplyPhysics(List<Rigidbody> rigidbodies, float deltaTime)
-        {
-            foreach (Rigidbody body in rigidbodies)
-            {
-                // Apply Gravity
-                body.ApplyForce(new Vector2f(0, body.Gravity) * deltaTime);
-
-                // Apply Velocity
-                body.gameObejct.Position += body.Velocity * deltaTime;
-
-                // Apply Firiction
-                float firiction = body.Friction * deltaTime;
-
-                if (body.Velocity.X > 0)
-                    body.Velocity -= new Vector2f(Math.Min(body.Velocity.X, firiction), 0);
-                else if (body.Velocity.X < 0)
-                    body.Velocity += new Vector2f(Math.Min(-body.Velocity.X, firiction), 0);
-            }
         }
     }
 
-    public interface IPhysical
+    public class AudioPlayer : Component
     {
-        /// <summary>
-        /// جاذبه
-        /// </summary>
-        float Gravity { get; set; } 
-        /// <summary>
-        /// اصطکاک
-        /// </summary>
-        float Friction { get; set; }
-        /// <summary>
-        /// تکانه
-        /// </summary>
-        Vector2f Velocity { get; set; } 
-    }
-
-    public class Rigidbody : IPhysical
-    {
-        public GameObejct gameObejct;
-        public float Gravity { get; set; }
-        public float Friction { get; set; }
-        public Vector2f Velocity { get; set; }
-
-        public void ApplyForce(Vector2f force)
+        public override void Update(float deltaTime)
         {
-            Velocity += force;
+
         }
     }
 }

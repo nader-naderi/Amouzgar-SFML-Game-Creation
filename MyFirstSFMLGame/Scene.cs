@@ -55,7 +55,14 @@ namespace MyFirstSFMLGame
 
         public void AddGameObejct(GameObejct target)
         {
+            // Editor
+
             gameObjects.Add(target);
+
+            if (target.GetComponent<Rigidbody>() != null)
+            {
+                PhysicsManager.AddRigidBody(target.GetComponent<Rigidbody>());
+            }
         }
 
         public void RemoveGameObejct(GameObejct target)

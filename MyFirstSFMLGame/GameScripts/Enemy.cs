@@ -8,6 +8,11 @@ namespace MyFirstSFMLGame
         public Enemy(Texture texture) : base(texture)
         {
             Tag = "Enemy";
+
+            Rigidbody rigidbody = new Rigidbody();
+            AddComponent(rigidbody, new AudioPlayer(), new SpriteRenderer());
+
+            PhysicsManager.AddRigidBody(rigidbody);
         }
 
         public override void Awake()

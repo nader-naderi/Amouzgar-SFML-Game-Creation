@@ -16,6 +16,8 @@ namespace MyFirstSFMLGame
         public Background(Texture texture) : base(texture)
         {
             Tag = "Background";
+
+            AddComponent(new SpriteRenderer());
         }
 
         public override void Awake()
