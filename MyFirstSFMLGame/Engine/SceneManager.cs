@@ -12,7 +12,7 @@
         {
             scenes.Add(scene);
 
-            if(currentActiveScene == null)
+            if (currentActiveScene == null)
                 currentActiveScene = scene;
         }
 

@@ -1,6 +1,6 @@
 ﻿using SFML.Graphics;
 
-namespace MyFirstSFMLGame
+namespace MyFirstSFMLGame 
 {
     public static class ResourceManager
     {
@@ -13,15 +13,15 @@ namespace MyFirstSFMLGame
         public static void LoadAssets()
         {
             PlayerTexture = new Texture(new Texture(Directory.GetCurrentDirectory() + "/Assets/Textures/player.png"));
-           
+
             EnemyTexture = new Texture(new Texture(Directory.GetCurrentDirectory() + "/Assets/Textures/enemy.png"));
-            
+
             Font = new Font(Directory.GetCurrentDirectory() + "/Assets/Textures/SpaceShooterRedux/Bonus/kenvector_future.ttf");
-            
-            BackGroundTexture = new Texture(new Texture(Directory.GetCurrentDirectory() + 
+
+            BackGroundTexture = new Texture(new Texture(Directory.GetCurrentDirectory() +
                 "/Assets/Textures/SpaceShooterRedux/Backgrounds/blue.png"));
 
-            BulletTexture = new Texture(new Texture(Directory.GetCurrentDirectory() + 
+            BulletTexture = new Texture(new Texture(Directory.GetCurrentDirectory() +
                 "/Assets/Textures/SpaceShooterRedux/PNG/Effects/fire06.png"));
 
         }

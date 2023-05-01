@@ -1,6 +1,6 @@
 ﻿namespace MyFirstSFMLGame
 {
-    public class Collider : Component
+    public class AudioPlayer : Component
     {
         public override void Update(float deltaTime)
         {

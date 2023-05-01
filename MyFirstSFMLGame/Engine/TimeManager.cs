@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.System;
 
-namespace MyFirstSFMLGame
+namespace MyFirstSFMLGame 
 {
     public static class TimeManager
     {
@@ -9,6 +9,8 @@ namespace MyFirstSFMLGame
         static Clock fpsClock;
         static Time fpsTime;
         static Text fpsTxt;
+        static Clock deltaClock = new Clock();
+        public static float deltaTime { get; private set; } = 0;
 
         public static void Awake()
         {
@@ -18,6 +20,8 @@ namespace MyFirstSFMLGame
 
         public static void Update(RenderWindow window)
         {
+            deltaTime = deltaClock.Restart().AsSeconds();
+
             fps++;
 
             if (fpsClock.ElapsedTime.AsSeconds() > 1)

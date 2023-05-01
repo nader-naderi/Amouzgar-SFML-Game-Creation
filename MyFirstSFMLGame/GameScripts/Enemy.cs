@@ -1,16 +1,21 @@
-﻿using SFML.Graphics;
+﻿
+using SFML.Graphics;
 using SFML.System;
 
 namespace MyFirstSFMLGame
 {
     public class Enemy : GameObejct
     {
-        public Enemy(Texture texture) : base(texture)
+        SpriteRenderer spriteRenderer;
+
+        public Enemy(Texture texture) : base()
         {
             Tag = "Enemy";
 
+            spriteRenderer = new SpriteRenderer(texture);
+
             Rigidbody rigidbody = new Rigidbody();
-            AddComponent(rigidbody, new AudioPlayer(), new SpriteRenderer());
+            AddComponent(rigidbody, new AudioPlayer(), spriteRenderer);
 
             PhysicsManager.AddRigidBody(rigidbody);
         }

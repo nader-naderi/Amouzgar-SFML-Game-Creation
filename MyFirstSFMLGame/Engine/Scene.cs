@@ -1,6 +1,7 @@
-﻿using SFML.Graphics;
+﻿using MyFirstSFMLGame;
+using SFML.Graphics;
 
-namespace MyFirstSFMLGame
+namespace MyFirstSFMLGame 
 {
     public class Scene : IInitializable, IUpdatable, IDisposable, Drawable, ILoadable
     {
@@ -11,13 +12,14 @@ namespace MyFirstSFMLGame
 
         public Scene(string name)
         {
-            gameObjects.Add(new GameObejct(ResourceManager.BackGroundTexture));
+            gameObjects.Add(new Background(ResourceManager.BackGroundTexture));
 
             gameObjects.Add(new Player(ResourceManager.PlayerTexture));
             gameObjects.Add(new Enemy(ResourceManager.EnemyTexture));
 
-            foreach (GameObejct gameObejct in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
             {
+                GameObejct gameObejct = gameObjects[i];
                 gameObejct.Awake();
                 gameObejct.Start();
             }
@@ -42,15 +44,22 @@ namespace MyFirstSFMLGame
 
         public void Draw(RenderTarget target, RenderStates states)
         {
-            foreach (GameObejct gameObejct in gameObjects)
+            // Iteration
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObejct gameObejct = gameObjects[i];
                 target.Draw(gameObejct);
+            }
         }
 
-        
+
         public void Update()
         {
-            foreach (GameObejct gameObject in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObejct gameObject = gameObjects[i];
                 gameObject.Update();
+            }
         }
 
         public void AddGameObejct(GameObejct target)
@@ -72,14 +81,20 @@ namespace MyFirstSFMLGame
 
         public void Load()
         {
-            foreach (GameObejct gameObject in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObejct gameObject = gameObjects[i];
                 gameObject.Load();
+            }
         }
 
         public void Unload()
         {
-            foreach (GameObejct gameObject in gameObjects)
+            for (int i = 0; i < gameObjects.Count; i++)
+            {
+                GameObejct gameObject = gameObjects[i];
                 gameObject.Unload();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿
+using SFML.Graphics;
 using SFML.System;
 
 namespace MyFirstSFMLGame
@@ -8,13 +9,15 @@ namespace MyFirstSFMLGame
         float bulletSpeed = 10;
         Rigidbody rb = new Rigidbody();
 
-        public Bullet(Texture texture) : base(texture)
+        public SpriteRenderer SpriteRenderer { get; private set; }
+
+        public Bullet(Texture texture) : base()
         {
             Tag = "Bullet";
-            
-            Console.WriteLine("BNB");
 
-            AddComponent(rb, new AudioPlayer(), new SpriteRenderer());
+            SpriteRenderer = new SpriteRenderer(texture);
+
+            AddComponent(rb, new AudioPlayer(), SpriteRenderer);
         }
 
         public override void Awake()
@@ -40,8 +43,6 @@ namespace MyFirstSFMLGame
             if (Position.X < 0 || Position.X > ResourceManager.Window.Size.X ||
                             Position.Y < 0 || Position.Y > ResourceManager.Window.Size.Y)
             {
-                // RemoveAt(i);
-                // Remove the bullet.
                 OnDestroy();
             }
         }

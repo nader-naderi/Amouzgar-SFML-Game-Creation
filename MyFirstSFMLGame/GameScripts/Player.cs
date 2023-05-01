@@ -1,8 +1,7 @@
-﻿using SFML.Graphics;
+﻿
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-
-using System.Numerics;
 
 namespace MyFirstSFMLGame
 {
@@ -10,12 +9,17 @@ namespace MyFirstSFMLGame
     {
         float speed = 2;
 
-        public Player(Texture texture) : base(texture)
+        SpriteRenderer spriteRenderer;
+
+        public Player(Texture texture) : base()
         {
             Tag = "Player";
 
             Rigidbody rigidbody = new Rigidbody();
-            AddComponent(rigidbody, new AudioPlayer(), new SpriteRenderer());
+
+            spriteRenderer = new SpriteRenderer(texture);
+
+            AddComponent(rigidbody, new AudioPlayer(), spriteRenderer);
 
             PhysicsManager.AddRigidBody(rigidbody);
         }
@@ -29,7 +33,7 @@ namespace MyFirstSFMLGame
         {
             base.Start();
             Position = new Vector2f(800 / 2, 600 / 2);
-            Sprite.Origin = new Vector2f(Sprite.TextureRect.Width / 2, Sprite.TextureRect.Height / 2);
+            spriteRenderer.Sprite.Origin = new Vector2f(spriteRenderer.Sprite.TextureRect.Width / 2, spriteRenderer.Sprite.TextureRect.Height / 2);
         }
 
         public override void Update()
@@ -68,7 +72,11 @@ namespace MyFirstSFMLGame
         private void Fire()
         {
             Bullet newBullet = new Bullet(ResourceManager.BulletTexture);
-            newBullet.Sprite.Origin = new Vector2f(Sprite.TextureRect.Width / 2, Sprite.TextureRect.Height / 2);
+
+            newBullet.SpriteRenderer.Sprite.Origin =
+                new Vector2f(spriteRenderer.Sprite.TextureRect.Width / 2,
+                spriteRenderer.Sprite.TextureRect.Height / 2);
+
             newBullet.Position = Position;
             newBullet.Rotation = Rotation;
 
@@ -79,17 +87,16 @@ namespace MyFirstSFMLGame
         public override void OnCollisionEnter(GameObejct target)
         {
             base.OnCollisionEnter(target);
+
             if (target.Tag == "Enemy")
-            {
-                Sprite.Color = Color.Blue;
-            }
+                spriteRenderer.Sprite.Color = Color.Blue;
         }
 
         public override void OnCollisionExit(GameObejct target)
         {
             if (target.Tag == "Enemy")
             {
-                Sprite.Color = Color.White;
+                spriteRenderer.Sprite.Color = Color.White;
             }
         }
     }

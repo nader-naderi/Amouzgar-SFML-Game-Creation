@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using MyFirstSFMLGame;
+using SFML.Graphics;
 using SFML.Window;
 
 using System;
@@ -12,7 +13,7 @@ namespace MyFirstSFMLGame
         Font font;
 
         public static Game Instance;
-        
+
         /// <summary>
         /// Engine Constructor
         /// </summary>
@@ -41,7 +42,7 @@ namespace MyFirstSFMLGame
             {
                 // Handle Events
                 window.DispatchEvents();
-                
+
                 // Update.
                 Update();
 
@@ -70,38 +71,6 @@ namespace MyFirstSFMLGame
                 window.Close();
 
             SceneManager.CurrentScene.Update();
-        }
-    }
-
-    // Componenets: DataType
-        // Rigidbody
-        // AudioPlayer
-        // SpriteRenderer
-        // Collider
-
-    // Generics
-        
-
-    public abstract class Component
-    {
-        public GameObejct gameObejct { get; set; }
-        public abstract void Update(float deltaTime);
-    }
-
-
-
-    public class SpriteRenderer : Component
-    {
-        public override void Update(float deltaTime)
-        {
-        }
-    }
-
-    public class AudioPlayer : Component
-    {
-        public override void Update(float deltaTime)
-        {
-
         }
     }
 }

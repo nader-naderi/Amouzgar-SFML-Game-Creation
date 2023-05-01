@@ -1,23 +1,20 @@
-﻿using SFML.Graphics;
+﻿
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyFirstSFMLGame
 {
     public class Background : GameObejct
     {
         Window window;
-        public Background(Texture texture) : base(texture)
+        SpriteRenderer spriteRenderer;
+
+        public Background(Texture texture) : base()
         {
             Tag = "Background";
-
-            AddComponent(new SpriteRenderer());
+            spriteRenderer = new SpriteRenderer(texture);
+            AddComponent(spriteRenderer);
         }
 
         public override void Awake()
@@ -32,8 +29,8 @@ namespace MyFirstSFMLGame
         {
             base.Start();
 
-            Sprite.Scale = new Vector2f((float)window.Size.X / Sprite.TextureRect.Width,
-                (float)window.Size.Y / Sprite.TextureRect.Height);
+            spriteRenderer.Sprite.Scale = new Vector2f((float)window.Size.X / spriteRenderer.Sprite.TextureRect.Width,
+                (float)window.Size.Y / spriteRenderer.Sprite.TextureRect.Height);
         }
 
         public override void Update()
